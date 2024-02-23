@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace sport_shop_dal.Entities;
 
-public partial class Specification
+public partial class Specification : BaseEntity
 {
-    public int Id { get; set; }
+    public new int Id { get; set; }
 
     public int ProductId { get; set; }
 

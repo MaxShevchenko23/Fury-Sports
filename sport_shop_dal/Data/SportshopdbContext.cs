@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using sport_shop_dal.Entities;
 
-namespace sport_shop_dal.Entities;
+namespace sport_shop_dal.Data;
 
 public partial class SportshopdbContext : DbContext
 {

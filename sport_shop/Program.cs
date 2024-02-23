@@ -1,7 +1,7 @@
 
 
 using Microsoft.EntityFrameworkCore;
-using sport_shop_dal.Entities;
+using sport_shop_dal.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
