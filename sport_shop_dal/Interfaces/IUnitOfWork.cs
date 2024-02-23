@@ -1,6 +1,10 @@
 ﻿namespace sport_shop_dal.Interfaces
 {
-    internal interface IUnitOfWork
+    public interface IUnitOfWork
     {
+        IProductRepository ProductRepository { get; }
+        ISpecificationRepository SpecificationRepository { get; }
+        IManufacturerRepository ManufacturerRepository { get; }
+        ICategoryRepository CategoryRepository { get; }
     }
 }
