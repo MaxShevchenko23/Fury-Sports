@@ -21,7 +21,7 @@ namespace sport_shop_bll.Services
         }
         public Task<CategoryPost> AddAsync(CategoryPost model)
         {
-            throw new NotImplementedException();
+            
         }
 
         public Task DeleteByIdAsync(int modelId)
