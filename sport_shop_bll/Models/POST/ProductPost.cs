@@ -1,11 +1,10 @@
 ﻿using sport_shop_dal.Entities;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace sport_shop_bll.Models.POST
 {
-    public class ProductPost
+    public class ProductPost : IValidatableObject
     {
-        public int Id { get; set; }
 
         public string Name { get; set; } = null!;
 
@@ -20,5 +19,29 @@ namespace sport_shop_bll.Models.POST
         public int Quantity { get; set; }
 
         public ICollection<Specification> Specifications { get; } = new List<Specification>();
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (CategoryId <= 0)
+            {
+                yield return new ValidationResult("Category id cannot be below 1. Set the proper value",
+                    new[] { "Product" });
+            }
+            if (ManufacturerId <= 0)
+            {
+                yield return new ValidationResult("Manufacturer id cannot be below 1. Set the proper value",
+                    new[] { "Product" });
+            }
+            if (Price < 0)
+            {
+                yield return new ValidationResult("The price cannot be less than 0",
+                    new[] { "Product" });
+            }
+            if (Quantity < 0)
+            {
+                yield return new ValidationResult("Quantity cannot be below 0. Set the proper value",
+                    new[] { "Product" });
+            }
+        }
     }
 }

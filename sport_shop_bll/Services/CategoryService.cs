@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore.Metadata;
 using sport_shop_bll.Interfaces;
 using sport_shop_bll.Models.GET;
 using sport_shop_bll.Models.POST;
 using sport_shop_bll.Models.UPDATE;
-using sport_shop_dal.Data;
+using sport_shop_dal.Entities;
 using sport_shop_dal.Interfaces;
 
 namespace sport_shop_bll.Services
@@ -19,29 +18,56 @@ namespace sport_shop_bll.Services
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
-        public Task<CategoryPost> AddAsync(CategoryPost model)
+        public async Task<CategoryGet> AddAsync(CategoryPost model)
         {
+            var entity = mapper.Map<Category>(model);
+            var created = await unitOfWork.CategoryRepository.CreateAsync(entity);
+            return mapper.Map<CategoryGet>(created);
+        }
+
+        public async Task<bool> DeleteAsync(CategoryUpdate model)
+        {
+            try
+            {
+                await unitOfWork.CategoryRepository.DeleteAsync(mapper.Map<Category>(model));
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteByIdAsync(int modelId)
+        {
+            try
+            {
+                await unitOfWork.CategoryRepository.DeleteAsync(modelId);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<IEnumerable<CategoryGet>> GetAllAsync()
+        {
+            var entities = await unitOfWork.CategoryRepository.GetAllAsync();
+            return entities.Select(e => mapper.Map<CategoryGet>(e));
+        }
+
+        public async Task<CategoryGet?> GetByIdAsync(int id)
+        {
+            return mapper.Map<CategoryGet>(await unitOfWork.CategoryRepository.GetAsync(id));
+        }
+
+        public async Task<CategoryGet?> UpdateAsync(CategoryUpdate model)
+        {
+            var entity = mapper.Map<Category>(model);
+            var updated = unitOfWork.CategoryRepository.Update(entity);
             
-        }
-
-        public Task DeleteByIdAsync(int modelId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<CategoryGet>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<CategoryGet> GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<CategoryUpdate> UpdateAsync(CategoryUpdate model)
-        {
-            throw new NotImplementedException();
+            return mapper.Map<CategoryGet>(updated);
         }
     }
 }

@@ -22,15 +22,17 @@ namespace sport_shop_dal.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var entity = await context.Products.FindAsync(id) ?? throw new DBException($"Record with meantioned id={id} was not found");
+            var entity = await context.Products.FindAsync(id);
+
             context.Products.Remove(entity);
             await context.SaveChangesAsync(true);
+
         }
 
-        public void Delete(Manufacturer source)
+        public async Task DeleteAsync(Manufacturer source)
         {
             context.Manufacturers.Remove(source);
-            context.SaveChangesAsync(true);
+            await context.SaveChangesAsync(true);
         }
 
         public async Task<Manufacturer?> Get(int id)

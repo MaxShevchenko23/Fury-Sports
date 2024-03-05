@@ -1,4 +1,6 @@
-﻿using sport_shop_dal.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using sport_shop_dal.Data;
 using sport_shop_dal.Entities;
 using sport_shop_dal.Interfaces;
 using System;
@@ -17,7 +19,7 @@ namespace sport_shop_dal.Repositories
         {
             this.context = context;
         }
-        public async Task<Category?> Create(Category source)
+        public async Task<Category?> CreateAsync(Category source)
         {
             var entity = await context.Categories.AddAsync(source);
             return entity.Entity;
@@ -25,18 +27,22 @@ namespace sport_shop_dal.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var entity = await context.Categories.FindAsync(id) ?? throw new DBException($"Record with meantioned id={id} was not found");
-            context.Categories.Remove(entity);
+            await context.Categories.Where(e => e.Id == id).ExecuteDeleteAsync();
             await context.SaveChangesAsync(true);
         }
 
-        public void Delete(Category source)
+        public async Task DeleteAsync(Category source)
         {
             context.Categories.Remove(source);
-            context.SaveChangesAsync(true);
+            await context.SaveChangesAsync(true);
         }
 
-        public async Task<Category?> Get(int id)
+        public async Task<IEnumerable<Category>> GetAllAsync()
+        {
+            return await context.Categories.ToListAsync();
+        }
+
+        public async Task<Category?> GetAsync(int id)
         {
             return await context.Categories.FindAsync(id);
         }

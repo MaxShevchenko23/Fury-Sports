@@ -5,10 +5,11 @@ namespace sport_shop_dal.Interfaces
 {
     public interface IRepository<T> where T : BaseEntity
     {
-        Task<T?> Create(T source);
-        Task<T?> Get(int id);
+        Task<T?> CreateAsync(T source);
+        Task<T?> GetAsync(int id);
+        Task<IEnumerable<T>> GetAllAsync();
         T Update(T source);
         Task DeleteAsync(int id);
-        void Delete(T source);
+        Task DeleteAsync(T source);
     }
 }

@@ -12,10 +12,11 @@ namespace sport_shop_bll.Interfaces
 
         Task<Read> GetByIdAsync(int id);
 
-        Task<Create> AddAsync(Create model);
+        Task<Read> AddAsync(Create model);
 
-        Task<Update> UpdateAsync(Update model);
+        Task<Read> UpdateAsync(Update model);
 
-        Task DeleteByIdAsync(int modelId);
+        Task<bool> DeleteByIdAsync(int modelId);
+        Task<bool> DeleteAsync(Update model);
     }
 }
