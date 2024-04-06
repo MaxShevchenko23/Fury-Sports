@@ -57,16 +57,51 @@ namespace sport_shop_bll.Services
             return entities.Select(e => mapper.Map<CategoryGet>(e));
         }
 
+        public async Task<List<CategoryForCatalogueGet>> GetCategoriesWithChildListAsync()
+        {
+            var entities = await unitOfWork.CategoryRepository.GetAllAsync();
+            
+            
+            //resulting list
+            List<CategoryForCatalogueGet> categoriesToReturn = new();
+            //to have ability to delete elements
+            List<Category> categories = entities.ToList();
+
+
+            //to set main categories
+            foreach (var c in entities)
+            {
+                if (c.RootCategoryId is null)
+                {
+                    categoriesToReturn.Add(mapper.Map<CategoryForCatalogueGet>(c));
+                    categories.Remove(c);
+                }
+            }
+
+            //to set 2-nd level of subcategories
+            foreach (var c in categories)
+            {
+                if (categoriesToReturn.Any(cat=>cat.Id==c.RootCategoryId))
+                {
+                    categoriesToReturn.FirstOrDefault(cat => cat.Id == c.RootCategoryId).ChildCategories
+                        .Add(mapper.Map<CategoryForCatalogueGet>(c));
+                }
+            }
+
+            return categoriesToReturn;
+        }
+
         public async Task<CategoryGet?> GetByIdAsync(int id)
         {
             return mapper.Map<CategoryGet>(await unitOfWork.CategoryRepository.GetAsync(id));
         }
 
-        public async Task<CategoryGet?> UpdateAsync(CategoryUpdate model)
+        public async Task<CategoryGet?> UpdateAsync(CategoryUpdate model, int id)
         {
             var entity = mapper.Map<Category>(model);
+            entity.Id = id;
             var updated = unitOfWork.CategoryRepository.Update(entity);
-            
+
             return mapper.Map<CategoryGet>(updated);
         }
     }

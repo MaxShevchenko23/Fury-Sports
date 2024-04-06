@@ -1,13 +1,10 @@
-﻿
-
-using sport_shop_dal.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
 namespace sport_shop_bll.Models.POST
 {
-    public class SpecificationPost:IValidatableObject
-    { 
+    public class SpecificationPost : IValidatableObject
+    {
         public int ProductId { get; set; }
 
         public string SpecificationName { get; set; } = null!;

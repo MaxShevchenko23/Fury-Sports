@@ -9,5 +9,6 @@ namespace sport_shop_dal.Interfaces
 {
     public interface ISpecificationRepository:IRepository<Specification>
     {
+        Task<IEnumerable<Specification>> GetByProductId(int productId);
     }
 }

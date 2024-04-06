@@ -23,6 +23,6 @@ namespace sport_shop_bll.Models.GET
 
         public int Quantity { get; set; }
 
-        public virtual ICollection<Specification> Specifications { get; } = new List<Specification>();
+        public IEnumerable<SpecificationGet> Specifications { get; set; }
     }
 }

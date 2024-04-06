@@ -3,15 +3,17 @@ using System.Collections.Generic;
 
 namespace sport_shop_dal.Entities;
 
-public partial class Specification : BaseEntity
+public partial class Cart : BaseEntity
 {
     public int Id { get; set; }
 
     public int ProductId { get; set; }
 
-    public string SpecificationName { get; set; } = null!;
+    public int Quantity { get; set; }
 
-    public string SpecificationValue { get; set; } = null!;
+    public int AccountId { get; set; }
+
+    public virtual Account Account { get; set; } = null!;
 
     public virtual Product Product { get; set; } = null!;
 }

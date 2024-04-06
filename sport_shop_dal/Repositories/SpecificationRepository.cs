@@ -1,4 +1,5 @@
-﻿using sport_shop_dal.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using sport_shop_dal.Data;
 using sport_shop_dal.Entities;
 using sport_shop_dal.Interfaces;
 using System;
@@ -11,14 +12,14 @@ namespace sport_shop_dal.Repositories
 {
     public class SpecificationRepository : ISpecificationRepository
     {
-        private readonly SportshopdbContext context;
+        private readonly FurySportsContext context;
 
-        public SpecificationRepository(SportshopdbContext context)
+        public SpecificationRepository(FurySportsContext context)
         {
             this.context = context;
         }
 
-        public async Task<Specification?> Create(Specification source)
+        public async Task<Specification?> CreateAsync(Specification source)
         {
             var entity = await context.Specifications.AddAsync(source);
             return entity.Entity;
@@ -31,15 +32,25 @@ namespace sport_shop_dal.Repositories
             await context.SaveChangesAsync(true);
         }
 
-        public void Delete(Specification source)
+        public async Task DeleteAsync(Specification source)
         {
             context.Specifications.Remove(source);
-            context.SaveChangesAsync(true);
+            await context.SaveChangesAsync(true);
         }
 
-        public async Task<Specification?> Get(int id)
+        public async Task<IEnumerable<Specification>> GetAllAsync()
+        {
+            return await context.Specifications.ToListAsync();
+        }
+
+        public async Task<Specification?> GetAsync(int id)
         {
             return await context.Specifications.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<Specification>> GetByProductId(int productId)
+        {
+            return await context.Specifications.Where(e => e.ProductId == productId).ToListAsync();
         }
 
         public Specification Update(Specification source)

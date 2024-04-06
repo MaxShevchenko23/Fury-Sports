@@ -9,5 +9,6 @@ namespace sport_shop_dal.Interfaces
 {
     public interface IManufacturerRepository:IRepository<Manufacturer>
     {
+        Task<IEnumerable<Manufacturer>?> Filter(string? name, string? country, int? mainCategoryId);
     }
 }

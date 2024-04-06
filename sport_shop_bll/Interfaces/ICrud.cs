@@ -14,7 +14,7 @@ namespace sport_shop_bll.Interfaces
 
         Task<Read> AddAsync(Create model);
 
-        Task<Read> UpdateAsync(Update model);
+        Task<Read> UpdateAsync(Update model, int id);
 
         Task<bool> DeleteByIdAsync(int modelId);
         Task<bool> DeleteAsync(Update model);

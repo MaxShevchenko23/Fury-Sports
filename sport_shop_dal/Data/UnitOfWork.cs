@@ -10,7 +10,7 @@ namespace sport_shop_dal.Data
 {
     public class UnitOfWork : IUnitOfWork 
     {
-        private readonly SportshopdbContext context;
+        private readonly FurySportsContext context;
         public UnitOfWork()
         {
             context = new();
@@ -19,6 +19,7 @@ namespace sport_shop_dal.Data
         public IManufacturerRepository ManufacturerRepository => new ManufacturerRepository(context);
         public ISpecificationRepository SpecificationRepository => new SpecificationRepository(context);
         public IProductRepository ProductRepository => new ProductRepository(context);
-
+        public IAccountRepository AccountRepository => new AccountsRepository(context);
+        public ICartRepository CartRepository => new CartRepository(context);
     }
 }

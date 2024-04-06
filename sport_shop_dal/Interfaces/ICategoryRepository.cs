@@ -9,5 +9,6 @@ namespace sport_shop_dal.Interfaces
 {
     public interface ICategoryRepository : IRepository<Category>
     {
+        Task<IEnumerable<Category>?> Filter(string? name, int? rootCategoryId);
     }
 }
