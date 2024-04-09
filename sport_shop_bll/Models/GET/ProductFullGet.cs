@@ -24,5 +24,11 @@ namespace sport_shop_bll.Models.GET
         public int Quantity { get; set; }
 
         public IEnumerable<SpecificationGet> Specifications { get; set; }
+
+        public IEnumerable<ProductImage> ProductImages { get; set; }
+
+        public IEnumerable<ReviewGet> Reviews { get; set; }
+
+
     }
 }

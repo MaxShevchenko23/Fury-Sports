@@ -8,5 +8,6 @@
         ICategoryRepository CategoryRepository { get; }
         IAccountRepository AccountRepository { get; }
         ICartRepository CartRepository { get; }
+        IReviewRepository ReviewRepository { get; }
     }
 }

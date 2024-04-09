@@ -66,7 +66,7 @@ namespace sport_shop.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<ProductShortGet>))]
         public async Task<ActionResult<IEnumerable<ProductFullGet>>> GetProductsForCartById([FromQuery] Dictionary<int, int> idNumberPairs)
         {
-
+            throw new NotImplementedException();
         }
 
 

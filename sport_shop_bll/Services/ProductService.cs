@@ -66,8 +66,14 @@ namespace sport_shop_bll.Services
             var entity = await unitOfWork.ProductRepository.GetAsync(id);
             var specs = await unitOfWork.SpecificationRepository.GetByProductId(id);
 
+            var comments = await unitOfWork.ReviewRepository.GetReviewsByProdIdAsync(id);
+
+
             ProductFullGet model = mapper.Map<ProductFullGet>(entity);
+
             model.Specifications = specs.Select(mapper.Map<SpecificationGet>);
+            model.Reviews = comments.Select(mapper.Map<ReviewGet>);
+
             return model;
         }
         public async Task<ProductShortGet> GetByIdAsyncShort(int id)
@@ -87,8 +93,8 @@ namespace sport_shop_bll.Services
                 specsEntities = specs.Select(e => mapper.Map<Specification>(e)).ToList();
             }
 
-            var entities = await unitOfWork.ProductRepository.Filter(name, categoryId, manufacturerId, description, minPrice, maxPrice, quantity, specsEntities,pageSize, pageNumber);
-            return entities.Select(e=>mapper.Map<ProductFullGet>(e));
+            var entities = await unitOfWork.ProductRepository.Filter(name, categoryId, manufacturerId, description, minPrice, maxPrice, quantity, specsEntities, pageSize, pageNumber);
+            return entities.Select(e => mapper.Map<ProductFullGet>(e));
         }
 
         public async Task<ProductFullGet> UpdateAsync(ProductUpdate model, int id)

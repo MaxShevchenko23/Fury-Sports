@@ -27,5 +27,9 @@ public partial class Product : BaseEntity
 
     public virtual ICollection<Order> Orders { get; } = new List<Order>();
 
+    public virtual ICollection<ProductImage> ProductImages { get; } = new List<ProductImage>();
+
+    public virtual ICollection<Review> Reviews { get; } = new List<Review>();
+
     public virtual ICollection<Specification> Specifications { get; } = new List<Specification>();
 }

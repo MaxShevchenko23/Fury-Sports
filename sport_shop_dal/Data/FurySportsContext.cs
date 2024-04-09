@@ -28,13 +28,14 @@ public partial class FurySportsContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<ProductImage> ProductImages { get; set; }
+
+    public virtual DbSet<Review> Reviews { get; set; }
+
     public virtual DbSet<Specification> Specifications { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer("Data Source=DESKTOP-KKLFTJP;Database=furySports;MultipleActiveResultSets=true;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
-        //optionsBuilder.UseLazyLoadingProxies();
-    }
+        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-KKLFTJP;Database=furySports;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -109,9 +110,7 @@ public partial class FurySportsContext : DbContext
         {
             entity.ToTable("orders");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.AccountId).HasColumnName("account_id");
             entity.Property(e => e.ClientAddress)
                 .HasMaxLength(50)
@@ -166,6 +165,54 @@ public partial class FurySportsContext : DbContext
                 .HasForeignKey(d => d.ManufacturerId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_products_manufacturers");
+        });
+
+        modelBuilder.Entity<ProductImage>(entity =>
+        {
+            entity.ToTable("product images");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.ImageUrl)
+                .HasMaxLength(50)
+                .HasColumnName("image_url");
+            entity.Property(e => e.ProductId).HasColumnName("product_id");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.ProductImages)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_product images_products");
+        });
+
+        modelBuilder.Entity<Review>(entity =>
+        {
+            entity.ToTable("reviews");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.AccountId).HasColumnName("account_id");
+            entity.Property(e => e.Date)
+                .HasColumnType("date")
+                .HasColumnName("date");
+            entity.Property(e => e.Mark)
+                .HasColumnType("decimal(5, 0)")
+                .HasColumnName("mark");
+            entity.Property(e => e.ProductId).HasColumnName("product_id");
+            entity.Property(e => e.ReviewContent)
+                .HasColumnType("text")
+                .HasColumnName("review_content");
+
+            entity.HasOne(d => d.Account).WithMany(p => p.Reviews)
+                .HasForeignKey(d => d.AccountId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_reviews_accounts");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.Reviews)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_reviews_products");
         });
 
         modelBuilder.Entity<Specification>(entity =>

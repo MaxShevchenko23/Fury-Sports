@@ -37,7 +37,7 @@ namespace sport_shop_dal.Repositories
 
         public async Task<Product?> GetAsync(int id)
         {
-            var entity = await context.Products.FirstOrDefaultAsync(e => e.Id == id);
+            var entity = await context.Products.SingleAsync(e => e.Id == id);
 
             return entity;
         }
