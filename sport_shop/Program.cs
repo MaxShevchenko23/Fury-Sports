@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using sport_shop_bll.Services;
 using sport_shop_dal.Data;
-using sport_shop_dal.Entities;
 using sport_shop_dal.Interfaces;
 using Serilog;
 using Serilog.Formatting.Json;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console(new JsonFormatter())
@@ -45,6 +45,9 @@ try
 	builder.Services.AddScoped<SpecificationService>();
 	builder.Services.AddScoped<CategoryService>();
 	builder.Services.AddScoped<ManufacturerService>();
+	builder.Services.AddScoped<ReviewService>();
+	builder.Services.AddScoped<OrderService>();
+	builder.Services.AddScoped<AccountService>();
 
 	builder.Services.AddCors(options =>
     {

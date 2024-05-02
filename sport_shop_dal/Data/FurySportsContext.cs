@@ -18,6 +18,8 @@ public partial class FurySportsContext : DbContext
 
     public virtual DbSet<Account> Accounts { get; set; }
 
+    public virtual DbSet<AccountRole> AccountRoles { get; set; }
+
     public virtual DbSet<Cart> Carts { get; set; }
 
     public virtual DbSet<Category> Categories { get; set; }
@@ -28,14 +30,12 @@ public partial class FurySportsContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
-    public virtual DbSet<ProductImage> ProductImages { get; set; }
-
     public virtual DbSet<Review> Reviews { get; set; }
 
     public virtual DbSet<Specification> Specifications { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-KKLFTJP;Database=furySports;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False");
+        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-KKLFTJP;Database=furySports;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False;MultipleActiveResultSets=true;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -53,13 +53,23 @@ public partial class FurySportsContext : DbContext
             entity.Property(e => e.Role).HasColumnName("role");
         });
 
-        modelBuilder.Entity<Cart>(entity =>
+        modelBuilder.Entity<AccountRole>(entity =>
         {
-            entity.ToTable("cart");
+            entity.ToTable("account_roles");
 
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
+            entity.Property(e => e.Role)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("role");
+        });
+
+        modelBuilder.Entity<Cart>(entity =>
+        {
+            entity.ToTable("cart");
+
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.AccountId).HasColumnName("account_id");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
@@ -124,6 +134,12 @@ public partial class FurySportsContext : DbContext
             entity.Property(e => e.Date)
                 .HasColumnType("date")
                 .HasColumnName("date");
+            entity.Property(e => e.Payment)
+                .HasMaxLength(10)
+                .HasColumnName("payment");
+            entity.Property(e => e.Post)
+                .HasMaxLength(20)
+                .HasColumnName("post");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.Status).HasColumnName("status");
@@ -147,6 +163,9 @@ public partial class FurySportsContext : DbContext
             entity.Property(e => e.Description)
                 .HasColumnType("text")
                 .HasColumnName("description");
+            entity.Property(e => e.Image)
+                .HasColumnType("text")
+                .HasColumnName("image");
             entity.Property(e => e.ManufacturerId).HasColumnName("manufacturer_id");
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
@@ -154,7 +173,9 @@ public partial class FurySportsContext : DbContext
             entity.Property(e => e.Price)
                 .HasColumnType("money")
                 .HasColumnName("price");
+            entity.Property(e => e.Purchases).HasColumnName("purchases");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.Views).HasColumnName("views");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
@@ -167,31 +188,11 @@ public partial class FurySportsContext : DbContext
                 .HasConstraintName("FK_products_manufacturers");
         });
 
-        modelBuilder.Entity<ProductImage>(entity =>
-        {
-            entity.ToTable("product images");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.ImageUrl)
-                .HasMaxLength(50)
-                .HasColumnName("image_url");
-            entity.Property(e => e.ProductId).HasColumnName("product_id");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.ProductImages)
-                .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_product images_products");
-        });
-
         modelBuilder.Entity<Review>(entity =>
         {
             entity.ToTable("reviews");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.AccountId).HasColumnName("account_id");
             entity.Property(e => e.Date)
                 .HasColumnType("date")

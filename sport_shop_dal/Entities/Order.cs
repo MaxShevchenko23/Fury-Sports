@@ -23,6 +23,10 @@ public partial class Order : BaseEntity
 
     public int Status { get; set; }
 
+    public string? Post { get; set; }
+
+    public string? Payment { get; set; }
+
     public virtual Account? Account { get; set; }
 
     public virtual Product Product { get; set; } = null!;

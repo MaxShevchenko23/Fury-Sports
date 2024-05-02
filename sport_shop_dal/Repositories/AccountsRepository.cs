@@ -2,11 +2,6 @@
 using sport_shop_dal.Data;
 using sport_shop_dal.Entities;
 using sport_shop_dal.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace sport_shop_dal.Repositories
 {
@@ -18,9 +13,21 @@ namespace sport_shop_dal.Repositories
         {
             this.context = context;
         }
+
+        public async Task<Account?> Authorizate(Account source)
+        {
+            Account? entity = await context.Accounts.FirstOrDefaultAsync(e => e.Email == source.Email && e.PhoneNumber == source.PhoneNumber);
+            if (entity==null)
+            {
+                return await CreateAsync(source);               
+            }
+            return entity;
+        }
+
         public async Task<Account?> CreateAsync(Account source)
         {
             var entity = await context.Accounts.AddAsync(source);
+            await context.SaveChangesAsync(true);
             return entity.Entity;
         }
 
@@ -43,7 +50,7 @@ namespace sport_shop_dal.Repositories
 
         public async Task<Account?> GetAsync(int id)
         {
-            return await context.Accounts.FindAsync(id);
+            return await context.Accounts.SingleAsync(e => e.Id == id);
         }
 
         public Account Update(Account source)

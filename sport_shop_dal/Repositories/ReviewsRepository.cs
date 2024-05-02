@@ -47,8 +47,15 @@ namespace sport_shop_dal.Repositories
 
         public async Task<IEnumerable<Review>> GetReviewsByProdIdAsync(int id)
         {
-            var entities = context.Reviews.Where(e => e.ProductId == id).AsEnumerable();
-            return entities.AsEnumerable();
+            var reviews = context.Reviews.Where(e => e.ProductId == id).ToList();
+            foreach (Review review in reviews)
+            {
+                var account = await context.Accounts.SingleAsync(e => e.Id == review.AccountId);
+                review.Account = account;
+            }
+
+
+            return reviews.AsEnumerable();
         }
 
         public Review Update(Review source)

@@ -4,6 +4,7 @@ using sport_shop_dal.Data;
 using sport_shop_dal.Entities;
 using sport_shop_dal.Interfaces;
 
+
 namespace sport_shop_dal.Repositories
 {
     public class ProductRepository : IProductRepository
@@ -17,6 +18,7 @@ namespace sport_shop_dal.Repositories
 
         public async Task<Product?> CreateAsync(Product source)
         {
+            source.Views = 0;
             var entity = await context.Products.AddAsync(source);
             await context.SaveChangesAsync();
             return entity.Entity;
@@ -37,7 +39,10 @@ namespace sport_shop_dal.Repositories
 
         public async Task<Product?> GetAsync(int id)
         {
-            var entity = await context.Products.SingleAsync(e => e.Id == id);
+            var entity = await context.Products.Include(e => e.Manufacturer).Include(e => e.Reviews).FirstAsync(e => e.Id == id);
+
+            entity.Views = (entity.Views == null) ? 1 : entity.Views += 1;
+            this.Update(entity);
 
             return entity;
         }
@@ -61,6 +66,12 @@ namespace sport_shop_dal.Repositories
             return entities.OrderByDescending(e => e.Id);
         }
 
+        public async Task PurchasesInc(int id)
+        {
+            var entity = await context.Products.FirstAsync(e => e.Id == id);
+            entity.Purchases = (entity.Purchases == null) ? 1 : entity.Purchases += 1;
+        }
+
         public async Task<IEnumerable<Product>?> Filter(string? name,
             int? categoryId,
             int? manufacturerId,
@@ -73,7 +84,7 @@ namespace sport_shop_dal.Repositories
             int pageNumber)
         {
             //convert products to queryable
-            var productsQueryable = context.Products.AsQueryable();
+            var productsQueryable = context.Products.Include(e => e.Manufacturer).Include(e => e.Reviews).AsQueryable();
 
             //var to return
             IEnumerable<Product> result;
@@ -168,7 +179,7 @@ namespace sport_shop_dal.Repositories
                 foreach (var child in childCategories)
                 {
                     categoryIds.Add(child.Id);
-                    CollectAllChildCategories(child.Id,  ref categoryIds);
+                    CollectAllChildCategories(child.Id, ref categoryIds);
                 }
             }
             else

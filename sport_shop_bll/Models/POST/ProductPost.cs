@@ -17,6 +17,9 @@ namespace sport_shop_bll.Models.POST
         public decimal Price { get; set; }
 
         public int Quantity { get; set; }
+        public virtual Manufacturer Manufacturer { get; set; } = null!;
+
+        public string? Image { get; set; }
 
         public ICollection<Specification> Specifications { get; } = new List<Specification>();
 

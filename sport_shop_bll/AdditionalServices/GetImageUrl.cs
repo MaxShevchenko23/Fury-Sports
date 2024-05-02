@@ -1,7 +1,5 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Edge;
-using System.Drawing;
-using System.IO;
 
 namespace sport_shop_bll.AdditionalServices
 {
@@ -21,23 +19,11 @@ namespace sport_shop_bll.AdditionalServices
                 {
                     memoryStream.CopyTo(fileStream);
 
-                    driver.Navigate().GoToUrl("https://cubeupload.com/");
+                    driver.Navigate().GoToUrl("https://imgbox.com/");
 
-                    if (driver.FindElement(By.ClassName("left log nav")) != null)
-                    {
-                        driver.FindElement(By.ClassName("left log nav")).Click();
+                    var input = driver.FindElement(By.Name("files[]"));
 
-                        if (driver.Url == "https://cubeupload.com/login")
-                        {
-                            driver.FindElement(By.Name("cube_username")).SendKeys("furySport");
-                            driver.FindElement(By.Name("cube_password")).SendKeys("zolotishko");
-                        }
-                        else
-                        {
-                            throw new Exception("Getting Url Exception: Page didnt load the login form");
-                        }
-                    }
-                    driver.FindElement(By.Id("uploadContainer")).SendKeys("temp.png");
+                    input.SendKeys(fileStream.Name);
                 }
             }
             return driver.Url;

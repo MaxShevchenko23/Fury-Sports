@@ -13,5 +13,6 @@ namespace sport_shop_dal.Interfaces
         Task<IEnumerable<Product>?> Filter(string? name, int? categoryId, int? manufacturerId, string? description, decimal? minPrice, decimal? maxPrice, int? quantity, IEnumerable<Specification>? specs, int pageSize,
             int pageNumber);
         Task<IEnumerable<Product>> GetAllDecreasingAsync();
+        Task PurchasesInc(int id);
     }
 }

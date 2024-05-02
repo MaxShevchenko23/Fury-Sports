@@ -21,26 +21,10 @@ namespace sport_shop.Controllers
             this.service = service;
         }
 
-        [HttpGet("{id}/full")]
+        [HttpGet("{id}/short")]
         [ProducesResponseType(200, Type = typeof(ProductShortGet))]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<ProductShortGet>> GetProductByIdFullAsync(int id)
-        {
-            var model = await service.GetByIdAsync(id);
-            if (model != null)
-            {
-                return Ok(model);
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
-
-        [HttpGet("{id}/short")]
-        [ProducesResponseType(200, Type = typeof(ProductFullGet))]
-        [ProducesResponseType(404)]
-        public async Task<ActionResult<ProductFullGet>> GetProductByIdShortAsync(int id)
+        public async Task<ActionResult<ProductShortGet>> GetProductByIdShortAsync(int id)
         {
             var model = await service.GetByIdAsyncShort(id);
             if (model != null)
@@ -53,25 +37,31 @@ namespace sport_shop.Controllers
             }
         }
 
+        [HttpGet("{id}/full")]
+        [ProducesResponseType(200, Type = typeof(ProductFullGet))]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<ProductFullGet>> GetProductByIdFullAsync(int id)
+        {
+            var model = await service.GetByIdAsync(id);
+            if (model != null)
+            {
+                return Ok(model);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         [HttpGet("all")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<ProductFullGet>))]
-        public async Task<ActionResult<IEnumerable<ProductFullGet>>> GetAllProductsAsync()
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ProductShortGet>))]
+        public async Task<ActionResult<IEnumerable<ProductShortGet>>> GetAllProductsAsync()
         {
             var models = await service.GetAllAsync();
             return Ok(models);
         }
-        
-        
-        [HttpGet("cart")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<ProductShortGet>))]
-        public async Task<ActionResult<IEnumerable<ProductFullGet>>> GetProductsForCartById([FromQuery] Dictionary<int, int> idNumberPairs)
-        {
-            throw new NotImplementedException();
-        }
 
-
-
-        [HttpPost]
+        [HttpPost("filter")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<ProductFullGet>))]
         [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<ProductFullGet>>> GetFilteredProducts(string? name, int? categoryId, int? manufacturerId,
@@ -95,7 +85,7 @@ namespace sport_shop.Controllers
         [ProducesResponseType(201, Type = typeof(ProductFullGet))]
         [ProducesResponseType(401)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<ProductFullGet>> PostProductAsync([FromBody] ProductPost model)
+        public async Task<ActionResult<ProductFullGet>> PostProductAsync(ProductPost model)
         {
             var created = await service.AddAsync(model);
             if (created != null)

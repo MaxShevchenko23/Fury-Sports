@@ -22,5 +22,8 @@ namespace sport_shop_dal.Data
         public IAccountRepository AccountRepository => new AccountsRepository(context);
         public ICartRepository CartRepository => new CartRepository(context);
         public IReviewRepository ReviewRepository => new ReviewsRepository(context);
+        public IOrderRepository OrderRepository => new OrdersRepository(context);
+
+
     }
 }

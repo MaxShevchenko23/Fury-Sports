@@ -32,6 +32,16 @@ namespace sport_shop_bll.Profiles
             CreateMap<Specification, SpecificationFilter>().ReverseMap();
 
             CreateMap<Review, ReviewGet>().ReverseMap();
+            CreateMap<Review, ReviewPost>().ReverseMap();
+            CreateMap<Review, ReviewUpdate>().ReverseMap();
+
+            CreateMap<Order, OrderGet>().ReverseMap();
+            CreateMap<Order, OrderPost>().ReverseMap();
+            CreateMap<Order, OrderUpdate>().ReverseMap();
+
+            CreateMap<Account, AccountGet>().ReverseMap();
+            CreateMap<Account, AccountPost>().ReverseMap();
+            CreateMap<Account, AccountUpdate>().ReverseMap();
         }
     }
 }

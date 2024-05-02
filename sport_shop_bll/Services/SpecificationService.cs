@@ -74,10 +74,9 @@ namespace sport_shop_bll.Services
 
         public async Task<IEnumerable<SpecificationGet>> GetSpecificationsByProductIdAsync(int productId)
         {
-            var entity = await unitOfWork.ProductRepository.GetAsync(productId);
-            var specs = entity.Specifications;
+            var entity = await unitOfWork.SpecificationRepository.GetByProductId(productId);
 
-            return specs.Select(mapper.Map<SpecificationGet>);
+            return entity.Select(mapper.Map<SpecificationGet>);
         }
 
         public Task<IEnumerable<SpecificationGet>> GetSpecificationsForProductsInCategoryAsync(int categoryId)

@@ -9,5 +9,6 @@
         IAccountRepository AccountRepository { get; }
         ICartRepository CartRepository { get; }
         IReviewRepository ReviewRepository { get; }
+        IOrderRepository OrderRepository { get; }
     }
 }

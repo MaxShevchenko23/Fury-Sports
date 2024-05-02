@@ -1,19 +1,18 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using sport_shop_bll.AdditionalServices;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 
 namespace sport_shop.Controllers
 {
     [ApiController]
     [Route("test")]
-    public class Test
+    public class Test : ControllerBase
     {
         //[HttpPost]
-        //public ActionResult<byte[]> SendImage(byte[] buffer)
+        //public async Task<ActionResult> Upload(byte[] buffer)
         //{
-        //    GetImageUrl getImageUrl = new();
+        //    Image baseImage = Image.FromStream(new MemoryStream(buffer));
 
-        //    var url = getImageUrl.GetUrl(buffer);
+
         //}
     }
 }
