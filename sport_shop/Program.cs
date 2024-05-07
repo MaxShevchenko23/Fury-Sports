@@ -10,7 +10,9 @@ using Newtonsoft.Json;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console(new JsonFormatter())
-    .WriteTo.File("logs/logs.txt", rollingInterval: RollingInterval.Day)
+    .WriteTo.File("logs/logs.txt", 
+	rollingInterval: RollingInterval.Day,
+	restrictedToMinimumLevel:	Serilog.Events.LogEventLevel.Information)
     .CreateLogger();
 
 try
@@ -53,7 +55,7 @@ try
     {
         options.AddPolicy(name: "AllowLocalHost", policy =>
         {
-            policy.WithOrigins("http://127.0.0.1:5500");
+            policy.WithOrigins("http://127.0.0.1:58373");
         });
     });
 

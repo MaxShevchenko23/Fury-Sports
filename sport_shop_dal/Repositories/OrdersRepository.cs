@@ -43,9 +43,12 @@ namespace sport_shop_dal.Repositories
             }
             source.Status = 0;
 
-
+            //return new Order();
 
             var entity = await context.Orders.AddAsync(source);
+            var updated = await context.Products.Where(e => e.Id == source.ProductId)
+                .ExecuteUpdateAsync(e => e.SetProperty(p => p.Quantity, p => p.Quantity - source.Quantity));
+
             await context.SaveChangesAsync(true);
             return entity.Entity;
         }

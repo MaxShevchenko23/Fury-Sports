@@ -10,7 +10,7 @@ namespace sport_shop_bll.Models.POST
         
         public int Quantity { get; set; }
 
-        public int? AccountId { get; set; }
+        public int AccountId { get; set; }
 
         [MaxLength(12)]
         [RegularExpression(@"\d*")]

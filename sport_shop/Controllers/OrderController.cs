@@ -92,8 +92,12 @@ namespace sport_shop.Controllers
         public async Task<ActionResult<OrderGet>> ChangeOrderStatus(int orderId, int statusCode)
         {
             var changed = await service.ChangeStatusAsync(orderId, statusCode);
-            
-            return Ok(changed);
+            if(changed != null)
+            {
+                return Ok(changed);
+
+            }
+            return NotFound();
         }
     }
 }

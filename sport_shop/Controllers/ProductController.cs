@@ -90,7 +90,7 @@ namespace sport_shop.Controllers
             var created = await service.AddAsync(model);
             if (created != null)
             {
-                return CreatedAtAction("GetProductByIdFullAsync", created.Id);
+                return Ok(created);
             }
             else
             {
