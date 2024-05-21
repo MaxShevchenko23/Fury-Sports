@@ -14,5 +14,6 @@ namespace sport_shop_dal.Interfaces
             int pageNumber);
         Task<IEnumerable<Product>> GetAllDecreasingAsync();
         Task PurchasesInc(int id);
+        Task SaveContext();
     }
 }

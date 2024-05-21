@@ -3,7 +3,8 @@ using Microsoft.IdentityModel.Tokens;
 using sport_shop_dal.Data;
 using sport_shop_dal.Entities;
 using sport_shop_dal.Interfaces;
-
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace sport_shop_dal.Repositories
 {
@@ -39,7 +40,7 @@ namespace sport_shop_dal.Repositories
 
         public async Task<Product?> GetAsync(int id)
         {
-            var entity = await context.Products.Include(e => e.Manufacturer).Include(e => e.Reviews).FirstAsync(e => e.Id == id);
+            var entity = await context.Products.AsNoTracking().Include(e => e.Manufacturer).Include(e => e.Reviews).FirstAsync(e => e.Id == id);
 
             entity.Views = (entity.Views == null) ? 1 : entity.Views += 1;
             this.Update(entity);
@@ -222,6 +223,11 @@ namespace sport_shop_dal.Repositories
 
 
             return result;
+        }
+
+        public async Task SaveContext()
+        {
+            await context.SaveChangesAsync();
         }
     }
 }

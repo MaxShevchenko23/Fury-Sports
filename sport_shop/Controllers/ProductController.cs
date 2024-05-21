@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using AutoMapper.Configuration.Annotations;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using sport_shop_bll.Models.Filter;
@@ -104,7 +106,7 @@ namespace sport_shop.Controllers
         [ProducesResponseType(401)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<ProductFullGet>> PutProductAsync([FromBody] ProductUpdate model, [FromQuery] int id)
+        public async Task<ActionResult<ProductFullGet>> PutProductAsync([FromBody] ProductUpdate model, int id)
         {
             var updated = await service.UpdateAsync(model, id);
             if (updated != null)
@@ -133,6 +135,31 @@ namespace sport_shop.Controllers
             }
         }
 
+        [HttpPatch("{id}/edit")]
+        public async Task<ActionResult<ProductFullGet>> EditProductAsync(int id, [FromBody] JsonPatchDocument<ProductFullGet> patchDocument)
+        {
+            if (patchDocument == null)
+            {
+                return BadRequest();
+            }
+
+            var model = await service.GetByIdAsync(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            patchDocument.ApplyTo(model, ModelState);
+
+            var updated = await service.UpdateAsync(model, id);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok();
+        }
 
     }
 }

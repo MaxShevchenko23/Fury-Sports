@@ -106,5 +106,18 @@ namespace sport_shop_bll.Services
             return mapper.Map<ProductFullGet>(updated);
 
         }
+        public async Task<ProductFullGet> UpdateAsync(ProductFullGet model, int id)
+        {
+            var entity = mapper.Map<Product>(model);
+            var updated = unitOfWork.ProductRepository.Update(entity);
+
+            return mapper.Map<ProductFullGet>(updated);
+        }
+
+
+        public async Task SaveData()
+        {
+           await unitOfWork.ProductRepository.SaveContext();
+        }
     }
 }

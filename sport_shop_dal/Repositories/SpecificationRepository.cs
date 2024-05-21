@@ -2,11 +2,6 @@
 using sport_shop_dal.Data;
 using sport_shop_dal.Entities;
 using sport_shop_dal.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace sport_shop_dal.Repositories
 {
@@ -21,7 +16,14 @@ namespace sport_shop_dal.Repositories
 
         public async Task<Specification?> CreateAsync(Specification source)
         {
+            if (source.SpecificationValue == "del")
+            {
+                context.Specifications.Remove(await context.Specifications.FirstAsync(e => e.SpecificationName == source.SpecificationName));
+                return new();
+            }
+
             var entity = await context.Specifications.AddAsync(source);
+            await context.SaveChangesAsync(true);
             return entity.Entity;
         }
 

@@ -37,7 +37,7 @@ try
     builder.Host.UseSerilog((ctx, lc) => lc
         .WriteTo.Console());
 
-    builder.Services.AddDbContext<FurySportsContext>(contextOptions => contextOptions.UseSqlServer("Data Source=sportshop.database.windows.net;Initial Catalog=sportshopdb;User ID=furyAdmin;Password=Administrastor1;Connect Timeout=30;Encrypt=True;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False"));
+    builder.Services.AddDbContext<FurySportsContext>();
 
 	builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -55,7 +55,7 @@ try
     {
         options.AddPolicy(name: "AllowLocalHost", policy =>
         {
-            policy.WithOrigins("http://127.0.0.1:58373");
+            policy.WithOrigins("http://127.0.0.1:50224");
         });
     });
 

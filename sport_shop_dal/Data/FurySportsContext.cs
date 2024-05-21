@@ -35,7 +35,10 @@ public partial class FurySportsContext : DbContext
     public virtual DbSet<Specification> Specifications { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-KKLFTJP;Database=furySports;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False;MultipleActiveResultSets=true;");
+    {
+        optionsBuilder.UseSqlServer("Data Source=DESKTOP-KKLFTJP;Database=furySports;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False;MultipleActiveResultSets=true;");
+        optionsBuilder.EnableSensitiveDataLogging();
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
