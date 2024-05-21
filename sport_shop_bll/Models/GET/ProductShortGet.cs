@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace sport_shop_bll.Models.GET
+﻿namespace sport_shop_bll.Models.GET
 {
     public class ProductShortGet
     {
@@ -15,11 +9,17 @@ namespace sport_shop_bll.Models.GET
         public int CategoryId { get; set; }
 
         public int ManufacturerId { get; set; }
+        public virtual ManufacturerGet Manufacturer { get; set; } = null!;
 
         public string? Description { get; set; }
 
         public decimal Price { get; set; }
 
         public int Quantity { get; set; }
+        public string? Image { get; set; }
+        public int? Views { get; set; }
+        public int? Purchases { get; set; }
+
+
     }
 }

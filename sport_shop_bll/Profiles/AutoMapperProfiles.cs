@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using sport_shop_bll.Models.Filter;
 using sport_shop_bll.Models.GET;
 using sport_shop_bll.Models.POST;
 using sport_shop_bll.Models.UPDATE;
@@ -14,6 +15,7 @@ namespace sport_shop_bll.Profiles
             CreateMap<Category, CategoryGet>().ReverseMap();
             CreateMap<Category, CategoryPost>().ReverseMap();
             CreateMap<Category, CategoryUpdate>().ReverseMap();
+            CreateMap<Category, CategoryForCatalogueGet>().ReverseMap();
 
             CreateMap<Manufacturer, ManufacturerGet>().ReverseMap();
             CreateMap<Manufacturer, ManufacturerPost>().ReverseMap();
@@ -23,6 +25,23 @@ namespace sport_shop_bll.Profiles
             CreateMap<Product, ProductFullGet>().ReverseMap();
             CreateMap<Product, ProductPost>().ReverseMap();
             CreateMap<Product, ProductUpdate>().ReverseMap();
+
+            CreateMap<Specification, SpecificationGet>().ReverseMap();
+            CreateMap<Specification, SpecificationPost>().ReverseMap();
+            CreateMap<Specification, SpecificationUpdate>().ReverseMap();
+            CreateMap<Specification, SpecificationFilter>().ReverseMap();
+
+            CreateMap<Review, ReviewGet>().ReverseMap();
+            CreateMap<Review, ReviewPost>().ReverseMap();
+            CreateMap<Review, ReviewUpdate>().ReverseMap();
+
+            CreateMap<Order, OrderGet>().ReverseMap();
+            CreateMap<Order, OrderPost>().ReverseMap();
+            CreateMap<Order, OrderUpdate>().ReverseMap();
+
+            CreateMap<Account, AccountGet>().ReverseMap();
+            CreateMap<Account, AccountPost>().ReverseMap();
+            CreateMap<Account, AccountUpdate>().ReverseMap();
         }
     }
 }

@@ -1,19 +1,20 @@
-﻿using sport_shop_dal.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using sport_shop_dal.Data;
 using sport_shop_dal.Entities;
 using sport_shop_dal.Interfaces;
-
 
 namespace sport_shop_dal.Repositories
 {
     public class ManufacturerRepository : IManufacturerRepository
     {
-        private readonly SportshopdbContext context;
+        private readonly FurySportsContext context;
 
-        public ManufacturerRepository(SportshopdbContext context)
+        public ManufacturerRepository(FurySportsContext context)
         {
             this.context = context;
         }
-        public async Task<Manufacturer?> Create(Manufacturer source)
+        public async Task<Manufacturer?> CreateAsync(Manufacturer source)
         {
             var entity = await context.Manufacturers.AddAsync(source);
             await context.SaveChangesAsync();
@@ -35,7 +36,36 @@ namespace sport_shop_dal.Repositories
             await context.SaveChangesAsync(true);
         }
 
-        public async Task<Manufacturer?> Get(int id)
+        public async Task<IEnumerable<Manufacturer>?> Filter(string? name, string? country, int? mainCategoryId)
+        {
+            IQueryable<Manufacturer> entities = context.Manufacturers.AsQueryable();
+
+            if (!name.IsNullOrEmpty())
+            {
+                name.Trim();
+                entities = entities.Where(e => e.Name.Contains(name));
+            }
+
+            if (!country.IsNullOrEmpty())
+            {
+                country.Trim();
+                entities = entities.Where(e => e.Country.Contains(name));
+            }
+
+            if (mainCategoryId.HasValue)
+            {
+                entities = entities.Where(e => e.MainCategoryId == mainCategoryId);
+            }
+
+            return entities;
+        }
+
+        public async Task<IEnumerable<Manufacturer>> GetAllAsync()
+        {
+            return await context.Manufacturers.ToListAsync();
+        }
+
+        public async Task<Manufacturer?> GetAsync(int id)
         {
             return await context.Manufacturers.FindAsync(id);
         }

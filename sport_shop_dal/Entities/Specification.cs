@@ -5,7 +5,7 @@ namespace sport_shop_dal.Entities;
 
 public partial class Specification : BaseEntity
 {
-    public new int Id { get; set; }
+    public int Id { get; set; }
 
     public int ProductId { get; set; }
 

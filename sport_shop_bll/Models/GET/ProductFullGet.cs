@@ -1,9 +1,4 @@
 ﻿using sport_shop_dal.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace sport_shop_bll.Models.GET
 {
@@ -16,13 +11,42 @@ namespace sport_shop_bll.Models.GET
         public int CategoryId { get; set; }
 
         public int ManufacturerId { get; set; }
+        public virtual ManufacturerGet Manufacturer { get; set; } = null!;
 
         public string? Description { get; set; }
 
         public decimal Price { get; set; }
-
+        public string? Image { get; set; }
         public int Quantity { get; set; }
+        public int? Views { get; set; }
 
-        public virtual ICollection<Specification> Specifications { get; } = new List<Specification>();
+        public int? Purchases { get; set; }
+
+
+
+        public decimal Rating
+        {
+            get
+            {
+                var reviews = Reviews;
+                int reviewsNumber = Reviews.Count() == 0 ? 1 : Reviews.Count();
+                decimal totalRating = 0;
+
+                foreach (var item in reviews)
+                {
+                    totalRating += item.Mark;
+                }
+
+                return totalRating / reviewsNumber;
+            }
+        }
+
+        public IEnumerable<SpecificationGet> Specifications { get; set; }
+
+        //public IEnumerable<ProductImage> ProductImages { get; set; }
+
+        public IEnumerable<ReviewGet> Reviews { get; set; }
+
+
     }
 }

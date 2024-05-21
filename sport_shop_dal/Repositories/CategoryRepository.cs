@@ -3,19 +3,15 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using sport_shop_dal.Data;
 using sport_shop_dal.Entities;
 using sport_shop_dal.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace sport_shop_dal.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
-        private readonly SportshopdbContext context;
+        private readonly FurySportsContext context;
 
-        public CategoryRepository(SportshopdbContext context)
+        public CategoryRepository(FurySportsContext context)
         {
             this.context = context;
         }
@@ -35,6 +31,11 @@ namespace sport_shop_dal.Repositories
         {
             context.Categories.Remove(source);
             await context.SaveChangesAsync(true);
+        }
+
+        public async Task<IEnumerable<Category>?> Filter(string? name, int? rootCategoryId)
+        {
+            return await context.Categories.Where(e=>e.Name.Contains(name) || e.RootCategoryId==rootCategoryId).ToListAsync();
         }
 
         public async Task<IEnumerable<Category>> GetAllAsync()

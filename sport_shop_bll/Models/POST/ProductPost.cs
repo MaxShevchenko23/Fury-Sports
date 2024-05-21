@@ -18,6 +18,8 @@ namespace sport_shop_bll.Models.POST
 
         public int Quantity { get; set; }
 
+        public string? Image { get; set; }
+
         public ICollection<Specification> Specifications { get; } = new List<Specification>();
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
